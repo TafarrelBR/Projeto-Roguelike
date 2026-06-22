@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"Script1",
+  "%Name":"Scr_Maquinda_de_Estados",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Script1",
+  "name":"Scr_Maquinda_de_Estados",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",
