@@ -2,7 +2,7 @@
 #region variaveis
 velh = 0;
 velv = 0;
-maxvel = 4;
+max_vel = 1;
 
 dir = 0;
 sprites_atuais = 
@@ -23,8 +23,10 @@ right =0;
 #region cria estados
 estado_parado = new estado();
 estado_andando = new estado();
+estado_entrando = new estado();
 #endregion
 
+#region estados
 #region estado parado
 estado_parado.inicia = function()
 {
@@ -37,9 +39,16 @@ estado_parado.inicia = function()
 	
 	troca_sprite(dir , sprites_atuais);
 }
-estado_parado.roda =function()
+estado_parado.roda = function()
 {
+	checa_inputs();
+	
 	//Condição para ir para o estado de andando
+	//Se eu apertei algum botão, mudo de estado
+	if(up or down or left or right)
+	{
+		troca_estado(estado_andando);
+	}
 }
 
 //Saindo do estado
@@ -61,6 +70,32 @@ estado_andando.inicia = function()
 	
 	troca_sprite(dir , sprites_atuais);
 }
+
+estado_andando.roda = function()
+{
+	troca_sprite(dir, sprites_atuais);
+	checa_inputs();
+	aplica_velocidade();
+}
+#endregion
+
+#region estado entrando
+
+//Iniciando o estado
+
+estado_entrando.inicia = function()
+{
+	sprites_atuais = 
+	{
+		lado: Spr_Ameba_entra,
+		cima: Spr_Ameba_entra,
+		baixo: Spr_Ameba_entra
+	}
+	
+	troca_sprite(dir, sprites_atuais);
+}
+#endregion
+
 #endregion
 
 #region metodos
@@ -72,6 +107,29 @@ checa_inputs = function()
 	right = keyboard_check(ord("D"));
 }
 
+ajusta_direcao = function()
+{
+	//Só faço isso se estiver apertando alguma tecla
+	if(up || down || left || right)
+	{
+		//Encontra a direção e divide por 90, para ter resultaods entre 0 e 3
+		dir = point_direction(0, 0, velh, velv) div 90; 
+	}
+	
+	//Ajustando o xscale dele para ele olhar par os dois lados
+	if(velh != 0)
+	{
+		image_xscale = sign(velh);
+	}
+}
+
+aplica_velocidade = function()
+{
+	velh = (right - left) * max_vel;
+	velv = (down - up) * max_vel;
+	
+	move_and_collide(velh, velv, all);
+}
 #endregion
 
 //Iniciando o estado dele
