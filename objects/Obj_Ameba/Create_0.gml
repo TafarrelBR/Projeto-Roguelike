@@ -72,19 +72,27 @@ estado_andando.inicia = function()
 }
 
 estado_andando.roda = function()
-{
+{	
 	troca_sprite(dir, sprites_atuais);
 	checa_inputs();
 	aplica_velocidade();
+	
+	//Entrando no personagem
+	if(keyboard_check(vk_enter))
+	{
+		troca_estado(estado_entrando);
+	}
 }
 #endregion
 
 #region estado entrando
 
 //Iniciando o estado
-
 estado_entrando.inicia = function()
-{
+{	
+	y-=8;
+	image_index = 0;
+	
 	sprites_atuais = 
 	{
 		lado: Spr_Ameba_entra,
@@ -93,6 +101,14 @@ estado_entrando.inicia = function()
 	}
 	
 	troca_sprite(dir, sprites_atuais);
+}
+estado_entrando.roda = function()
+{
+	//Se minha animação acabou, eu morro
+	if(image_index >= image_number-1)
+	{
+		instance_destroy();
+	}
 }
 #endregion
 
