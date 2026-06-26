@@ -104,9 +104,18 @@ estado_entrando.inicia = function()
 }
 estado_entrando.roda = function()
 {
+    
+    //Checando se estou colidendo com buraco
+    var _buraco = instance_place(x, y-5, Obj_Buraco_Menu);
+    
 	//Se minha animação acabou, eu morro
 	if(image_index >= image_number-1)
 	{
+        if (_buraco) 
+        {
+            //Ativando o buraco
+            _buraco.ativo = true;	
+        }
 		instance_destroy();
 	}
 }
